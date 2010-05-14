@@ -36,13 +36,13 @@ class Twitter
 		workers.perform(:threads => @concurrency) do |query_string|
 			retries = 0
 			begin
-				results = self.class.get('/search.json', :query => {:q => "\"#{query_string}\""})
+				results = self.class.get('/search.json', :query => {:q => "#{query_string}"})
 				# Handle rate limiting
 				if results.code == 420                          
 					if result.headers['retry-after']
 						retry_delay = result.headers['retry-after'].first.to_i
 					else
-						retry_delay = 60
+						retry_delay = @retry_delay
 					end
 					workers.halt(retry_delay) # Halt all workers for the retry delay
 					retry
