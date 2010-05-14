@@ -26,6 +26,8 @@ Gem::Specification.new do |s|
      "floormanager.gemspec",
      "lib/floormanager.rb",
      "lib/floormanager/queue.rb",
+     "lib/floormanager/result.rb",
+     "lib/floormanager/states.rb",
      "lib/floormanager/workers.rb",
      "spec/floormanager_spec.rb",
      "spec/spec.opts",
