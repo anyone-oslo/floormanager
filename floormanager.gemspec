@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "floormanager.gemspec",
      "lib/floormanager.rb",
      "lib/floormanager/queue.rb",
      "lib/floormanager/workers.rb",
