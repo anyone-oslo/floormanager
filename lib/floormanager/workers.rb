@@ -1,5 +1,5 @@
 module FloorManager
-	class Worker
+	class Workers
 
 		def initialize(*queue)
 			queue = *queue

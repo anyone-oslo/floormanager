@@ -1,2 +1,2 @@
 require 'floormanager/queue'
-require 'floormanager/worker'
+require 'floormanager/workers'
