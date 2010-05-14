@@ -28,17 +28,21 @@ module FloorManager
 		end
 
 		def checkout
-			@mutex.synchronize{@queue.checkout}
+			synchronize{@queue.checkout}
 		end
 
 		def checkin(*args)
-			@mutex.synchronize{@queue.checkin(*args)}
+			synchronize{@queue.checkin(*args)}
 		end
 
 		def synchronize
 			@mutex.synchronize{yield}
 		end
 		alias :exclusively :synchronize
+		
+		def halt(time)
+			synchronize{sleep(time)}
+		end
 		
 		def result(result, state=States::SUCCESS)
 			Result.new(result, state)
@@ -48,7 +52,7 @@ module FloorManager
 			result(result, States::SUCCESS)
 		end
 
-		def fail(result)
+		def failed(result=nil)
 			result(result, States::FAILED)
 		end
 	end

@@ -19,7 +19,7 @@ See the examples for more advanced usage.
 
 == TODO
 
-* Write the tests and examples
+* Write the tests
 
 == Copyright
 
