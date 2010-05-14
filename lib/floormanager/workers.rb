@@ -14,8 +14,9 @@ module FloorManager
 				Thread.new do
 					until queue.done?
 						if item = checkout
-							value = yield(item)
-							checkin(item, value)
+							result = yield(item)
+							result = Result.new(result, result, (result.state rescue States::SUCCESS))
+							checkin(item, result, result.state)
 						else
 							Thread.pass
 						end
@@ -38,5 +39,17 @@ module FloorManager
 			@mutex.synchronize{yield}
 		end
 		alias :exclusively :synchronize
+		
+		def result(result, state=States::SUCCESS)
+			Result.new(result, result, state)
+		end
+		
+		def success(result)
+			result(result, States::SUCCESS)
+		end
+
+		def fail(result)
+			result(result, States::FAILED)
+		end
 	end
 end

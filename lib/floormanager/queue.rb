@@ -2,12 +2,6 @@ module FloorManager
 	class Queue
 		include Enumerable
 
-		# States
-		PENDING     = 0
-		CHECKED_OUT = 1
-		FAILED      = 2
-		SUCCESS     = 3
-	
 		def initialize(*args)
 			@queue = []
 			args.each{|a| self << a} if (args = *args)
@@ -20,7 +14,7 @@ module FloorManager
 				@queue << {
 					:item  => item,
 					:value => nil,
-					:state => PENDING
+					:state => States::PENDING
 				}
 			end
 			alias :<< :add
@@ -45,7 +39,7 @@ module FloorManager
 			def checkout
 				if pending?
 					item = pending_items.first
-					item[:state] = CHECKED_OUT
+					item[:state] = States::CHECKED_OUT
 					item[:item]
 				else
 					nil
@@ -54,7 +48,7 @@ module FloorManager
 
 			# Check in an item with a new value, optionally with a state
 			# (which defaults to SUCCESS)
-			def checkin(item, value, state=SUCCESS)
+			def checkin(item, value, state=States::SUCCESS)
 				if keys.include?(item)
 					item = get_item(item)
 					item[:value] = value
@@ -111,27 +105,27 @@ module FloorManager
 
 			# Is this item processed?
 			def processed?(key)
-				state(key) > PENDING
+				state(key) > States::PENDING
 			end
 		
 			# Is this item checked out?
 			def checked_out?(key)
-				state(key) == CHECKED_OUT
+				state(key) == States::CHECKED_OUT
 			end
 
 			# Did this item fail?
 			def failed?(key)
-				state(key) == FAILED
+				state(key) == States::FAILED
 			end
 
 			# Did this item succeed?
 			def success?(key)
-				state(key) == SUCCESS
+				state(key) == States::SUCCESS
 			end
 
 			# Is this item completed?
 			def completed?(key)
-				state(key) >= FAILED
+				state(key) >= States::FAILED
 			end
 
 		private
@@ -149,27 +143,27 @@ module FloorManager
 
 			# Get all pending items
 			def pending_items
-				@queue.select{|i| i[:state] == PENDING}
+				@queue.select{|i| i[:state] == States::PENDING}
 			end
 
 			# Get all items which are checked out
 			def checked_out_items
-				@queue.select{|i| i[:state] == CHECKED_OUT}
+				@queue.select{|i| i[:state] == States::CHECKED_OUT}
 			end
 
 			# Get all completed items (both failed and successed)
 			def completed_items
-				@queue.select{|i| i[:state] >= FAILED}
+				@queue.select{|i| i[:state] >= States::FAILED}
 			end
 
 			# Get all failed items
 			def failed_items
-				@queue.select{|i| i[:state] == FAILED}
+				@queue.select{|i| i[:state] == States::FAILED}
 			end
 
 			# Get all successed items
 			def successed_items
-				@queue.select{|i| i[:state] == SUCCESS}
+				@queue.select{|i| i[:state] == States::SUCCESS}
 			end
 
 	end
