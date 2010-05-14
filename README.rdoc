@@ -1,4 +1,4 @@
-= FloorManager: Handle threaded workers like a champ
+= floormanager: Handle threaded workers like a champ
 
 == Usage
 
