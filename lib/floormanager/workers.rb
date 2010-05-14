@@ -15,7 +15,7 @@ module FloorManager
 					until queue.done?
 						if item = checkout
 							result = yield(item)
-							result = Result.new(result, result, (result.state rescue States::SUCCESS))
+							result = Result.new(result, (result.state rescue States::SUCCESS))
 							checkin(item, result, result.state)
 						else
 							Thread.pass
@@ -41,7 +41,7 @@ module FloorManager
 		alias :exclusively :synchronize
 		
 		def result(result, state=States::SUCCESS)
-			Result.new(result, result, state)
+			Result.new(result, state)
 		end
 		
 		def success(result)
