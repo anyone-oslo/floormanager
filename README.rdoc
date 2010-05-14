@@ -17,6 +17,10 @@
 
 See the examples for more advanced usage.
 
+== TODO
+
+* Write the tests and examples
+
 == Copyright
 
 Copyright (c) 2010 Inge Jørgensen. See LICENSE for details.
