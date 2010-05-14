@@ -1,5 +1,5 @@
 module FloorManager
-	class ProcessQueue
+	class Queue
 		include Enumerable
 
 		# States
