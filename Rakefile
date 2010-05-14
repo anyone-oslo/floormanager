@@ -5,12 +5,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "floormanager"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "inge@manualdesign.no"
+    gem.summary = %Q{Handle threaded workers like a champ}
+    gem.description = %Q{Simple ruby library for handling threaded workers operating on a queue}
+    gem.email = "inge@elektronaut.no"
     gem.homepage = "http://github.com/elektronaut/floormanager"
     gem.authors = ["Inge Jørgensen"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_development_dependency "rspec", ">= 1.3.0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

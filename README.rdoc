@@ -3,9 +3,9 @@
 == Usage
 
  require 'floormanager'
- include FloorManager
 
- workers = Workers.new('one', 'two', 'three', 'four', 'five')
+ queue   = FloorManager::Queue.new('one', 'two', 'three', 'four', 'five')
+ workers = FloorManager::Workers.new(queue)
 
  workers.perform(:threads => 3) do |item|
    item.upcase
