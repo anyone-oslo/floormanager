@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{floormanager}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Inge J\303\270rgensen"]
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "examples/twitter.rb",
      "floormanager.gemspec",
      "lib/floormanager.rb",
      "lib/floormanager/queue.rb",
@@ -40,7 +41,8 @@ Gem::Specification.new do |s|
   s.summary = %q{Handle threaded workers like a champ}
   s.test_files = [
     "spec/floormanager_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "examples/twitter.rb"
   ]
 
   if s.respond_to? :specification_version then
