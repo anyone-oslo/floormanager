@@ -14,22 +14,18 @@ module FloorManager
 				@queue << {
 					:item  => item,
 					:value => nil,
-					:state => States::PENDING
+					:state => States::PENDING,
+					:index => @queue.length
 				}
 			end
 			alias :<< :add
 	
-			# Get the value of an item in the queue
-			def get_value(key)
-				(item = get_item(key)) ? item[:value] : nil
+			# Get an item in the queue
+			def get_item(index)
+				@queue[index]
 			end
-			alias :[] :get_value
+			alias :[] :get_item
 	
-			# Returns all the items in the queue
-			def keys
-				@queue.map{|i| i[:item]}
-			end
-
 			# Returns each item with value, hash style
 			def each
 				@queue.each{|item| yield item[:item], item[:value]}
@@ -40,7 +36,7 @@ module FloorManager
 				if pending?
 					item = pending_items.first
 					item[:state] = States::CHECKED_OUT
-					item[:item]
+					item
 				else
 					nil
 				end
@@ -48,13 +44,11 @@ module FloorManager
 
 			# Check in an item with a new value, optionally with a state
 			# (which defaults to SUCCESS)
-			def checkin(item, value, state=States::SUCCESS)
-				if keys.include?(item)
-					item = get_item(item)
-					item[:value] = value
-					item[:state] = state
+			def checkin(item, state=States::SUCCESS)
+				if item.kind_of?(Hash) && @queue[item[:index]][:item] == item[:item]
+					@queue[item[:index]] = item.merge({:state => state})
 				else
-					invalid_key!
+					invalid_item!
 				end
 			end
 		
@@ -98,41 +92,11 @@ module FloorManager
 				failed_items.map{|i| i[:item]}
 			end
 
-			# Get the state of an item
-			def state(key)
-				(item = get_item(key)) ? item[:state] : invalid_key!
-			end
-
-			# Is this item processed?
-			def processed?(key)
-				state(key) > States::PENDING
-			end
-		
-			# Is this item checked out?
-			def checked_out?(key)
-				state(key) == States::CHECKED_OUT
-			end
-
-			# Did this item fail?
-			def failed?(key)
-				state(key) == States::FAILED
-			end
-
-			# Did this item succeed?
-			def success?(key)
-				state(key) == States::SUCCESS
-			end
-
-			# Is this item completed?
-			def completed?(key)
-				state(key) >= States::FAILED
-			end
-
 		private
 
 			# Handle invalid keys
-			def invalid_key!
-				raise ArgumentError, "Invalid key: #{item.inspect}"
+			def invalid_item!
+				raise ArgumentError, "Invalid item: #{item.inspect}"
 			end
 
 			# Get an item by key

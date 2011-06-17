@@ -9,21 +9,26 @@ module FloorManager
 		attr_reader :queue
 
 		def perform(options={})
-			options = {:threads => 1}.merge(options)
+			options = {:threads => 1, :timeout => false}.merge(options)
 			threads = (0...options[:threads]).to_a.map do |thread_id|
 				Thread.new do
 					until queue.done?
 						if item = checkout
-							result = yield(item)
+							result = yield(item[:item])
 							result = Result.new(result, (result.state rescue States::SUCCESS))
-							checkin(item, result, result.state)
+							item[:value] = result
+							checkin(item, result.state)
 						else
 							Thread.pass
 						end
 					end
 				end
 			end
-			threads.each{|t| t.join}
+			if options[:timeout]
+				threads.each{|t| t.join(options[:timeout])}
+			else
+				threads.each{|t| t.join}
+			end
 			@queue
 		end
 
